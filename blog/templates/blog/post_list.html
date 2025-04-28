@@ -1,24 +1,33 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Django Girls blog</title>
-  </head>
-  <body>
-    <header>
-      <h1><a href="/">Django Girls Blog</a></h1>
-    </header>
+{% extends 'blog/base.html' %}
 
-    <article>
-      <time>published: 14.06.2014, 12:14</time>
-      <h2><a href="">My first post</a></h2>
-      <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-    </article>
+{% block content %}
+  <div class="row">
+    <div class="col">
+      {% for post in posts %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <small class="text-muted">
+              {{ post.published_date|date:"F j, Y, g a" }}
+            </small>
+            <h2 class="card-title mt-2">
+              <a href="{% url 'post_detail' pk=post.pk %}">
+                {{ post.title }}
+              </a>
+            </h2>
+            <p class="card-text">
+              {{ post.text|linebreaksbr }}
+            </p>
+            <p>
+              <a href="{% url 'admin:blog_post_change' post.pk %}">Edit</a> |
+              <a href="{% url 'admin:blog_post_delete' post.pk %}">Delete</a>
+            </p>
+          </div>
+        </div>
+      {% empty %}
+        <p>No posts yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
 
-    <article>
-      <time>published: 14.06.2014, 12:14</time>
-      <h2><a href="">My second post</a></h2>
-      <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-    </article>
-  </body>
-</html>
 
